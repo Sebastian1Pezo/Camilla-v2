@@ -3,8 +3,127 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 ---
 
 <BaseLayout title="Camilla · 老师 | Lezioni di Italiano e Cinese a Torino">
-  <div class="hero">
-    <h1>Ciao, sono Camilla, <span class="zh">你的老师</span></h1>
-    <p>Ho 23 anni e due madrelingue: italiano e mandarino.</p>
+  <div class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#top">
+        <span class="seal">文</span>
+        <span class="brand-name">Camilla · 老师<small>TORINO · IT / 中文</small></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#prezzi" class="keep">Prezzi</a>
+        <a href="#metodo">Metodo</a>
+        <a href="#disponibilita">Orari</a>
+        <a href="#news">News</a>
+        <a className="cta-mini" href="#contatti">Prova gratis</a>
+      </nav>
+    </div>
   </div>
+
+  <header class="hero wrap" id="top">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow"><span class="dot-live"></span><span>都灵 · weekend · online e in presenza</span></span>
+        <h1>Ciao, sono Camilla,<br /><span class="zh">你的老师</span> <span class="italic">di italiano e cinese.</span></h1>
+        <p class="lead">Ho 23 anni e due madrelingue: <strong>italiano e mandarino</strong>. A Torino aiuto studenti cinesi a sbloccare l'italiano — e studenti italiani a imparare il cinese <strong>senza paura dei toni</strong>.</p>
+        <div class="hero-meta">
+          <span>📍 <b>Torino centro + online ovunque</b></span>
+          <span>🎓 <b>Bilingue IT / 中文</b></span>
+          <span>🕒 <b>Lezioni nel weekend</b></span>
+        </div>
+        <div class="btnrow">
+          <a class="btn btn-solid" target="_blank" rel="noopener" href="https://wa.me/393479648136?text=Ciao%20Camilla!%20Vorrei%20la%20prova%20gratis%20di%2030%20min%20(PROVA%20GRATIS)"><span>Prenota i 30 min gratis</span></a>
+          <a class="btn btn-ghost" href="#prezzi"><span>Vedi i prezzi ↓</span></a>
+        </div>
+      </div>
+      <aside class="teacher-card">
+        <div class="teacher-photo">
+          <div class="photo-placeholder">foto</div>
+          <div class="vertical-zh">中文老师 · 意大利语</div>
+        </div>
+        <div class="teacher-info">
+          <span class="role">LAOSHI · TUTOR BILINGUE</span>
+          <h2>Camilla, <span id="teacher-age">23</span> anni</h2>
+          <p>Cresciuta tra due lingue. Lezioni 70% conversazione, 30% grammatica.</p>
+          <span class="stamp">文老师 · Torino</span>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <section class="block wrap" id="prezzi">
+    <div class="sec-head">
+      <div class="sec-num">价</div>
+      <div><span class="kicker">Lezioni & prezzi</span><h2>Quanto costa imparare con me</h2></div>
+    </div>
+    <div class="price-grid">
+      <article class="price-card">
+        <h3>💻 Online</h3>
+        <div class="amount">12€ <small>/ ora</small></div>
+        <ul><li>60 min = 12€</li><li>Zero costi di spostamento</li></ul>
+      </article>
+      <article class="price-card featured">
+        <span class="tag">★ PIÙ SCELTA</span>
+        <h3>📍 In presenza</h3>
+        <div class="amount">15€ <small>/ ora</small></div>
+        <ul><li>60 min = 15€</li><li>Centro incluso</li></ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="block wrap" id="disponibilita">
+    <div class="sec-head">
+      <div class="sec-num">时</div>
+      <div><span class="kicker">Orari</span><h2>Quando sono libera</h2></div>
+    </div>
+    <p class="sec-sub">Insegno nel <b>weekend</b>. Tocca un orario per prenotarlo su WhatsApp.</p>
+    <div class="cal-shell">
+      <div class="cal-grid" id="cal-box"><p style="color:#b9b09a">…carico gli orari…</p></div>
+    </div>
+  </section>
+
+  <section class="block wrap" id="news">
+    <div class="sec-head">
+      <div class="sec-num">新</div>
+      <div><span class="kicker">News</span><h2>Novità</h2></div>
+    </div>
+    <div id="news-list"></div>
+  </section>
+
+  <section class="block wrap" id="contatti">
+    <div class="contact-band">
+      <div><h2>Scrivimi "PROVA GRATIS"</h2><p>Rispondo in giornata.</p></div>
+      <div class="btnrow">
+        <a class="btn btn-solid" href="https://wa.me/393479648136">WhatsApp</a>
+        <a class="btn btn-line" href="mailto:camilla@example.com">Email</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>© 2026 Camilla · 老师</span>
+      <span><a href="/admin" title="Area riservata">🔒</a></span>
+    </div>
+  </footer>
+
+  <script>
+    // Load orari
+    fetch('/disponibilita.json').then(r=>r.json()).then(d=>{
+      const box = document.getElementById('cal-box');
+      box.innerHTML = '';
+      (d.slots||[]).forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'day-box';
+        const slots = s.ore.length ? s.ore.map(o => `<a class="slot" href="https://wa.me/393479648136?text=Ciao%20Camilla!%20Vorrei%20prenotare%20${s.giorno}%20ore%20${o}">${o}</a>`).join('') : '<span class="slot off">completo</span>';
+        div.innerHTML = `<h3>${s.giorno}</h3><div class="slots">${slots}</div>`;
+        box.appendChild(div);
+      });
+    }).catch(()=>{});
+    // Load news
+    fetch('/content/news/index.json').then(r=>r.json()).then(news=>{
+      const box = document.getElementById('news-list');
+      if (!news.length) { box.innerHTML = '<p>Nessuna news.</p>'; return; }
+      box.innerHTML = news.map(n => `<article class="news-card"><h3>${n.title}</h3><p>${n.date||''}</p>${n.cover?`<img src="${n.cover}" style="max-width:100%;border-radius:4px;margin:10px 0;" />`:''}<div>${n.body||''}</div></article>`).join('');
+    }).catch(()=>{ document.getElementById('news-list').innerHTML = '<p>Nessuna news.</p>'; });
+  </script>
 </BaseLayout>
